@@ -35,3 +35,11 @@ func _ready():
 	print(leaderboard[2]["score"])
 	leaderboard[2]["score"] += 100
 	write_save_file(leaderboard)
+	
+	print(leaderboard[2]["score"])
+	leaderboard[2]["score"] += 100
+	write_save_file(leaderboard)
+	
+	print(leaderboard[2]["score"])
+	leaderboard[2]["score"] += 100
+	write_save_file(leaderboard)
