@@ -11,9 +11,24 @@ config_version=5
 [application]
 
 config/name="ScoreSpaceJam"
-run/main_scene="res://scenes/game_master.tscn"
+run/main_scene="res://scenes/gameplay.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 
 [autoload]
 
 GameMaster="*res://scenes/game_master.tscn"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="viewport"
+
+[editor]
+
+version_control/plugin_name="GitPlugin"
+version_control/autoload_on_startup=true
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0

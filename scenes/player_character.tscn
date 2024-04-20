@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://ca4607p5nypkw"]
+
+[ext_resource type="Script" path="res://scripts/CharacterBody2D.gd" id="1_aulth"]
+[ext_resource type="Texture2D" uid="uid://dh0lh4h4xtr44" path="res://sprites/SpaceGuyTemp.png" id="2_fieax"]
+[ext_resource type="Texture2D" uid="uid://clm70gy3pdulk" path="res://sprites/light.png" id="3_b3yd0"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lhyjp"]
+radius = 5.0
+height = 18.0
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+position = Vector2(81, 94)
+script = ExtResource("1_aulth")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_fieax")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.933333, 0.901961, 0.909804, 1)
+shadow_enabled = true
+shadow_filter = 2
+texture = ExtResource("3_b3yd0")
+texture_scale = 4.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+shape = SubResource("CapsuleShape2D_lhyjp")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(5, 5)
