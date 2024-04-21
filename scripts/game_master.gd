@@ -2,8 +2,9 @@ extends Node2D
 
 var json = JSON.new()
 var path = "user://data.json"
-
 var leaderboard = {}
+
+var player_state = "free"
 
 func write_save_file(content):
 	var file = FileAccess.open(path, FileAccess.WRITE)

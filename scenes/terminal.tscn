@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://disfkkdvd2opt"]
+
+[ext_resource type="Script" path="res://scripts/terminal.gd" id="1_7q4hh"]
+[ext_resource type="Script" path="res://scripts/interaction_area.gd" id="1_q8yee"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ymlfv"]
+size = Vector2(16, 16)
+
+[node name="terminal" type="Node2D"]
+script = ExtResource("1_7q4hh")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_q8yee")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource("RectangleShape2D_ymlfv")
+
+[connection signal="body_entered" from="InteractionArea" to="InteractionArea" method="_on_body_entered"]
+[connection signal="body_exited" from="InteractionArea" to="InteractionArea" method="_on_body_exited"]
