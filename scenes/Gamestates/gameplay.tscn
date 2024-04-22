@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bgolt5ijvl7jw"]
+[gd_scene load_steps=12 format=3 uid="uid://bgolt5ijvl7jw"]
 
 [ext_resource type="Texture2D" uid="uid://bbugs8a8gifss" path="res://tilemap/SpaceJamTilemap.png" id="1_lovqg"]
 [ext_resource type="Script" path="res://scripts/gameplay.gd" id="1_tdj3w"]
@@ -15,6 +15,9 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 agent_radius = 0.0
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_kerxt"]
+polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_mremv"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0n65w"]
@@ -139,8 +142,10 @@ texture = ExtResource("1_lovqg")
 3:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 3:3/0/physics_layer_0/angular_velocity = 0.0
 4:3/0 = 0
+4:3/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_mremv")
 4:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 4:3/0/physics_layer_0/angular_velocity = 0.0
+4:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 5:3/0 = 0
 5:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 5:3/0/physics_layer_0/angular_velocity = 0.0
@@ -313,30 +318,39 @@ texture = ExtResource("1_lovqg")
 1:9/0 = 0
 1:9/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:9/0/physics_layer_0/angular_velocity = 0.0
+1:9/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 2:9/0 = 0
 2:9/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:9/0/physics_layer_0/angular_velocity = 0.0
+2:9/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 3:9/0 = 0
 3:9/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 3:9/0/physics_layer_0/angular_velocity = 0.0
+3:9/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 4:9/0 = 0
 4:9/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 4:9/0/physics_layer_0/angular_velocity = 0.0
+4:9/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 5:9/0 = 0
 5:9/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 5:9/0/physics_layer_0/angular_velocity = 0.0
+5:9/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 6:9/0 = 0
 6:9/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 6:9/0/physics_layer_0/angular_velocity = 0.0
+6:9/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 7:9/0 = 0
 7:9/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 7:9/0/physics_layer_0/angular_velocity = 0.0
+7:9/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 8:9/0 = 0
 8:9/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 8:9/0/physics_layer_0/angular_velocity = 0.0
+8:9/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 9:9/0 = 0
 9:9/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 9:9/0/physics_layer_0/angular_velocity = 0.0
+9:9/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSet" id="TileSet_e2wd6"]
 occlusion_layer_0/light_mask = 1
