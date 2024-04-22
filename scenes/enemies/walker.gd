@@ -1,8 +1,11 @@
 extends CharacterBody2D
 
 @onready var navigation_agent = $NavigationAgent2D as NavigationAgent2D
+@onready var laser_manager = get_parent().get_parent().get_child(1)
+@onready var spit_target = get_parent().get_parent().get_child(0)
+@onready var spit = preload("res://scenes/player/spit.tscn")
 
-var speed = 25.0
+const SPEED = 30.0
 const ACCELERATION = 10
 const HIT_SCORE = 100
 var max_health = 5
@@ -11,6 +14,7 @@ var health
 var hitstun = false
 var player = null
 var is_chasing = false
+var spit_speed = 500
 
 func _ready():
 	health = max_health
@@ -18,16 +22,16 @@ func _ready():
 func _physics_process(delta):
 	if hitstun == true:
 		return
-	
 	var direction = to_local(navigation_agent.get_next_path_position()).normalized()
-	velocity = velocity.lerp(direction * speed, ACCELERATION * delta)
+	velocity = velocity.lerp(direction * SPEED, ACCELERATION * delta)
 	
 	if velocity.x > 0:
 		$AnimatedSprite2D.flip_h = true
 	else:
 		$AnimatedSprite2D.flip_h = false
 
-	move_and_slide()
+	if is_chasing == true:
+		move_and_slide()
 
 func _on_area_2d_body_entered(body):
 	player = body
@@ -40,19 +44,16 @@ func _on_area_2d_body_exited(body):
 	is_chasing = false
 
 func _on_pathfind_timer_timeout():
-	make_path()
+	var rando = randi_range(0, 100)
+	if rando < 8:
+		is_chasing = false
+		shoot_spit()
+		
+	if is_chasing == true:
+		make_path()
 		
 func make_path():
-	if is_chasing == true:
-		speed = 55
 		navigation_agent.target_position = player.global_position
-	else:
-		speed = 20
-		navigation_agent.target_position = global_position + Vector2(randi_range(-64, 64), randi_range(-64, 64))
-		#if navigation_agent.target_position.x > position.x:
-			#$AnimatedSprite2D.flip_h = true
-		#else:
-			#$AnimatedSprite2D.flip_h = false
 
 func take_damage(amount):
 	
@@ -81,6 +82,20 @@ func _on_hurtbox_area_body_entered(body):
 	if body.has_method("game_over"):
 		body.game_over()
 
-
-
+func shoot_spit():
+	$AnimatedSprite2D.animation = "spit"
 	
+	var spit_instance = spit.instantiate()
+	laser_manager.add_child(spit_instance)
+	spit_instance.self_modulate = Color.GREEN_YELLOW
+	spit_instance.global_position = global_position
+	spit_instance.velocity = global_position.direction_to(spit_target.global_position) * spit_speed
+
+
+func _on_animated_sprite_2d_animation_finished():
+	var spit_instance = spit.instantiate()
+	laser_manager.add_child(spit_instance)
+	spit_instance.self_modulate = Color.GREEN_YELLOW
+	spit_instance.global_position = global_position
+	spit_instance.velocity = global_position.direction_to(spit_target.global_position) * spit_speed
+	$AnimatedSprite2D.animation = "walk"

@@ -1,0 +1,138 @@
+[gd_scene load_steps=16 format=3 uid="uid://ck7crt5ga8t2q"]
+
+[ext_resource type="Script" path="res://scenes/enemies/walker.gd" id="1_gbr7v"]
+[ext_resource type="Texture2D" uid="uid://i47of5btyapa" path="res://sprites/SlimeSpritesheet.png" id="2_eppof"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shs52"]
+atlas = ExtResource("2_eppof")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6a21m"]
+atlas = ExtResource("2_eppof")
+region = Rect2(16, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_35pxd"]
+atlas = ExtResource("2_eppof")
+region = Rect2(64, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uspw8"]
+atlas = ExtResource("2_eppof")
+region = Rect2(80, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_srn5r"]
+atlas = ExtResource("2_eppof")
+region = Rect2(96, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_77nuy"]
+atlas = ExtResource("2_eppof")
+region = Rect2(16, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f0gs8"]
+atlas = ExtResource("2_eppof")
+region = Rect2(16, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_npi3y"]
+atlas = ExtResource("2_eppof")
+region = Rect2(32, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yoegm"]
+atlas = ExtResource("2_eppof")
+region = Rect2(48, 48, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5553e"]
+animations = [{
+"frames": [{
+"duration": 3.0,
+"texture": SubResource("AtlasTexture_shs52")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6a21m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_35pxd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uspw8")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_srn5r")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_77nuy")
+}],
+"loop": false,
+"name": &"spit",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f0gs8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_npi3y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yoegm")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nrluo"]
+radius = 5.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7njok"]
+radius = 76.0263
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_betnp"]
+radius = 3.0
+
+[node name="walker" type="CharacterBody2D"]
+z_as_relative = false
+collision_layer = 4
+collision_mask = 5
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_gbr7v")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -7)
+sprite_frames = SubResource("SpriteFrames_5553e")
+animation = &"spit"
+autoplay = "walk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+y_sort_enabled = true
+position = Vector2(1, -6)
+rotation = 1.5708
+shape = SubResource("CircleShape2D_nrluo")
+
+[node name="search_radius_area" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="search_radius_shape" type="CollisionShape2D" parent="search_radius_area"]
+scale = Vector2(2, 2)
+shape = SubResource("CircleShape2D_7njok")
+
+[node name="hurtbox_area" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="hurtbox_shape" type="CollisionShape2D" parent="hurtbox_area"]
+position = Vector2(-3, -6)
+rotation = 1.5708
+shape = SubResource("CircleShape2D_betnp")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="Pathfind_timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_entered" from="search_radius_area" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="search_radius_area" to="." method="_on_area_2d_body_exited"]
+[connection signal="body_entered" from="hurtbox_area" to="." method="_on_hurtbox_area_body_entered"]
+[connection signal="timeout" from="Pathfind_timer" to="." method="_on_pathfind_timer_timeout"]

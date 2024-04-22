@@ -1,0 +1,81 @@
+[gd_scene load_steps=4 format=3 uid="uid://pgns2qmehhbv"]
+
+[ext_resource type="Texture2D" uid="uid://ce2ct43qc0ch3" path="res://sprites/SpaceBackgroundTemp.png" id="1_qvio2"]
+[ext_resource type="Script" path="res://scripts/Camera2D.gd" id="2_4pv3t"]
+[ext_resource type="Script" path="res://scripts/Scoreboard.gd" id="3_sibcg"]
+
+[node name="scorescene" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(128, 73)
+texture = ExtResource("1_qvio2")
+
+[node name="Camera2D" type="Camera2D" parent="Sprite2D"]
+position = Vector2(0, -1)
+zoom = Vector2(5, 5)
+position_smoothing_enabled = true
+script = ExtResource("2_4pv3t")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -242.5
+offset_top = -208.0
+offset_right = 242.5
+offset_bottom = 208.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Highscores_text" type="Label" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+text = "Highscores:"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Scoreboard" type="VBoxContainer" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("3_sibcg")
+
+[node name="Scores1" type="Label" parent="CanvasLayer/VBoxContainer/Scoreboard"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Rank1: xd"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Scores2" type="Label" parent="CanvasLayer/VBoxContainer/Scoreboard"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Rank1: xd"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Scores3" type="Label" parent="CanvasLayer/VBoxContainer/Scoreboard"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Rank1: xd"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Scores4" type="Label" parent="CanvasLayer/VBoxContainer/Scoreboard"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Rank1: xd"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Scores5" type="Label" parent="CanvasLayer/VBoxContainer/Scoreboard"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Rank1: xd"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true

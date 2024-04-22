@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 @onready var navigation_agent = $NavigationAgent2D as NavigationAgent2D
 
-var speed = 25.0
+const SPEED = 30.0
 const ACCELERATION = 10
 const HIT_SCORE = 100
 var max_health = 5
@@ -18,16 +18,16 @@ func _ready():
 func _physics_process(delta):
 	if hitstun == true:
 		return
-	
 	var direction = to_local(navigation_agent.get_next_path_position()).normalized()
-	velocity = velocity.lerp(direction * speed, ACCELERATION * delta)
+	velocity = velocity.lerp(direction * SPEED, ACCELERATION * delta)
 	
 	if velocity.x > 0:
 		$AnimatedSprite2D.flip_h = true
 	else:
 		$AnimatedSprite2D.flip_h = false
 
-	move_and_slide()
+	if is_chasing == true:
+		move_and_slide()
 
 func _on_area_2d_body_entered(body):
 	player = body
@@ -40,19 +40,11 @@ func _on_area_2d_body_exited(body):
 	is_chasing = false
 
 func _on_pathfind_timer_timeout():
-	make_path()
+	if is_chasing == true:
+		make_path()
 		
 func make_path():
-	if is_chasing == true:
-		speed = 55
 		navigation_agent.target_position = player.global_position
-	else:
-		speed = 20
-		navigation_agent.target_position = global_position + Vector2(randi_range(-64, 64), randi_range(-64, 64))
-		#if navigation_agent.target_position.x > position.x:
-			#$AnimatedSprite2D.flip_h = true
-		#else:
-			#$AnimatedSprite2D.flip_h = false
 
 func take_damage(amount):
 	

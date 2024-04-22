@@ -1,0 +1,6 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://2ys5rmwoglg6"]
+
+[ext_resource type="FontFile" uid="uid://brlkj3p4nkb67" path="res://themes/XoloniumBold-xKZO.ttf" id="1_mihkq"]
+
+[resource]
+base_font = ExtResource("1_mihkq")

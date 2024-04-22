@@ -11,9 +11,6 @@ func _process(delta):
 	global_position += velocity * delta
 
 func _on_body_entered(body):
-	if body.has_method("take_damage"):
-		GameMaster.sharpshooter_combo += 1
-		body.take_damage(damage)
-	else:
-		GameMaster.sharpshooter_combo = 0
+	if body.has_method("game_over"):
+		body.game_over()
 	queue_free()

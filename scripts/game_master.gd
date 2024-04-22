@@ -4,7 +4,7 @@ var json = JSON.new()
 var path = "user://data.json"
 var leaderboard = {}
 
-var score = 0
+var score = 1
 var sharpshooter_combo = 0
 
 var player_state = "free"
@@ -35,3 +35,7 @@ func _ready():
 	print(leaderboard[2]["score"])
 	leaderboard[2]["score"] += 100
 	write_save_file(leaderboard)
+
+
+func _on_timer_timeout():
+	score += 1

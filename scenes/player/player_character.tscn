@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ca4607p5nypkw"]
+[gd_scene load_steps=9 format=3 uid="uid://ca4607p5nypkw"]
 
 [ext_resource type="Script" path="res://scripts/CharacterBody2D.gd" id="1_aulth"]
 [ext_resource type="Texture2D" uid="uid://dh0lh4h4xtr44" path="res://sprites/SpaceGuyTemp.png" id="2_fieax"]
@@ -9,6 +9,26 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jqksl"]
 radius = 2.0
 height = 8.0
+
+[sub_resource type="Animation" id="Animation_pnbtt"]
+resource_name = "fade_out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DeathTransition/ColorRect:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2fi84"]
+_data = {
+"fade_out": SubResource("Animation_pnbtt")
+}
 
 [node name="CharacterBody2D" type="CharacterBody2D" groups=["player"]]
 z_as_relative = false
@@ -38,3 +58,20 @@ position_smoothing_enabled = true
 script = ExtResource("4_w0bfm")
 
 [node name="Path2D" parent="." instance=ExtResource("4_i8qqx")]
+
+[node name="DeathTransition" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_2fi84")
+}
+
+[node name="ColorRect" type="ColorRect" parent="DeathTransition"]
+self_modulate = Color(1, 1, 1, 0)
+light_mask = 0
+offset_left = -379.0
+offset_top = -272.0
+offset_right = 372.0
+offset_bottom = 244.0
+color = Color(0, 0, 0, 1)
+metadata/_edit_use_anchors_ = true
+
+[connection signal="animation_finished" from="DeathTransition" to="." method="_on_death_transition_animation_finished"]

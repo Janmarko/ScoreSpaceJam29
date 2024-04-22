@@ -1,8 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://bgolt5ijvl7jw"]
+[gd_scene load_steps=11 format=3 uid="uid://bgolt5ijvl7jw"]
 
 [ext_resource type="Texture2D" uid="uid://bbugs8a8gifss" path="res://tilemap/SpaceJamTilemap.png" id="1_lovqg"]
 [ext_resource type="Script" path="res://scripts/gameplay.gd" id="1_tdj3w"]
 [ext_resource type="PackedScene" uid="uid://ca4607p5nypkw" path="res://scenes/player/player_character.tscn" id="2_3k002"]
+[ext_resource type="Script" path="res://scenes/Gamestates/scoreboy.gd" id="2_ciqri"]
+[ext_resource type="PackedScene" uid="uid://djgs2lnt8migq" path="res://scenes/enemies/slime.tscn" id="5_603ns"]
+[ext_resource type="PackedScene" uid="uid://ck7crt5ga8t2q" path="res://scenes/enemies/walker.tscn" id="6_vb73n"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_b32ly"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -344,6 +347,19 @@ sources/0 = SubResource("TileSetAtlasSource_0n65w")
 [node name="gameplay" type="Node2D"]
 script = ExtResource("1_tdj3w")
 
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="scoreboy" type="Label" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 61.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 2
+script = ExtResource("2_ciqri")
+
 [node name="Darkness" type="CanvasModulate" parent="."]
 color = Color(0, 0, 0, 1)
 
@@ -359,3 +375,13 @@ y_sort_enabled = true
 position = Vector2(175, 175)
 
 [node name="laser_manager" type="Node2D" parent="YSort"]
+y_sort_enabled = true
+
+[node name="enemy_manager" type="Node2D" parent="YSort"]
+y_sort_enabled = true
+
+[node name="slime2" parent="YSort/enemy_manager" instance=ExtResource("5_603ns")]
+position = Vector2(83, 215)
+
+[node name="walker" parent="YSort/enemy_manager" instance=ExtResource("6_vb73n")]
+position = Vector2(97, 144)

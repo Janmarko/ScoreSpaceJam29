@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="ScoreSpaceJam"
-run/main_scene="res://scenes/gameplay.tscn"
+run/main_scene="res://scenes/Gamestates/gameplay.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 
 [autoload]
@@ -29,6 +29,13 @@ window/stretch/mode="viewport"
 
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
+
+[gui]
+
+theme/custom="res://themes/XoloniumBold.tres"
+theme/custom_font="res://themes/XoloniumBold.tres"
+theme/default_font_antialiasing=0
+theme/default_font_hinting=2
 
 [input]
 

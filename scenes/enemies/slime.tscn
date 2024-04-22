@@ -1,0 +1,90 @@
+[gd_scene load_steps=10 format=3 uid="uid://djgs2lnt8migq"]
+
+[ext_resource type="Script" path="res://scripts/slime.gd" id="1_cykh8"]
+[ext_resource type="Texture2D" uid="uid://i47of5btyapa" path="res://sprites/SlimeSpritesheet.png" id="1_v2syu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vqh7v"]
+atlas = ExtResource("1_v2syu")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mghs2"]
+atlas = ExtResource("1_v2syu")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kerm6"]
+atlas = ExtResource("1_v2syu")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5553e"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vqh7v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mghs2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kerm6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nrluo"]
+radius = 5.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7njok"]
+radius = 26.5047
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_betnp"]
+radius = 2.23607
+
+[node name="slime" type="CharacterBody2D"]
+z_as_relative = false
+collision_layer = 4
+collision_mask = 5
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_cykh8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -7)
+sprite_frames = SubResource("SpriteFrames_5553e")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+y_sort_enabled = true
+position = Vector2(1, -2)
+rotation = 1.5708
+shape = SubResource("CircleShape2D_nrluo")
+
+[node name="search_radius_area" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="search_radius_shape" type="CollisionShape2D" parent="search_radius_area"]
+scale = Vector2(2, 2)
+shape = SubResource("CircleShape2D_7njok")
+
+[node name="hurtbox_area" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="hurtbox_shape" type="CollisionShape2D" parent="hurtbox_area"]
+position = Vector2(-3, -1)
+rotation = 1.5708
+shape = SubResource("CircleShape2D_betnp")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+debug_enabled = true
+
+[node name="Pathfind_timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="body_entered" from="search_radius_area" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="search_radius_area" to="." method="_on_area_2d_body_exited"]
+[connection signal="body_entered" from="hurtbox_area" to="." method="_on_hurtbox_area_body_entered"]
+[connection signal="timeout" from="Pathfind_timer" to="." method="_on_pathfind_timer_timeout"]
