@@ -1,9 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://ds58up3640lfl"]
+[gd_scene load_steps=9 format=3 uid="uid://dgaa1nrjurvyo"]
 
-[ext_resource type="Texture2D" uid="uid://b3jc0iffget1v" path="res://sprites/DoorTemp.png" id="1_5m7ll"]
-[ext_resource type="Script" path="res://scripts/door.gd" id="1_xk2qh"]
-[ext_resource type="Texture2D" uid="uid://57umg06tgeoo" path="res://sprites/IconTilemap.png" id="3_wy3cx"]
-[ext_resource type="Script" path="res://scripts/DoorButton.gd" id="3_x5wnp"]
+[ext_resource type="Script" path="res://scripts/single_door.gd" id="1_0fm44"]
+[ext_resource type="Texture2D" uid="uid://b3jc0iffget1v" path="res://sprites/DoorTemp.png" id="2_5supk"]
+[ext_resource type="Script" path="res://scripts/DoorButton.gd" id="3_1txih"]
+[ext_resource type="Texture2D" uid="uid://57umg06tgeoo" path="res://sprites/IconTilemap.png" id="4_kwsj3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xqlvr"]
 size = Vector2(16, 16)
@@ -14,14 +14,19 @@ polygon = PackedVector2Array(-1, -8, 1, -8, 1, 8, -1, 8)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_idesg"]
 size = Vector2(14, 14)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mok1n"]
+size = Vector2(16, 16)
+
 [node name="doors" type="Node2D"]
-script = ExtResource("1_xk2qh")
+script = ExtResource("1_0fm44")
 
 [node name="door1" type="StaticBody2D" parent="."]
-position = Vector2(0, 8)
+position = Vector2(0, 4)
+scale = Vector2(1, 0.5)
+collision_mask = 7
 
 [node name="d1" type="Sprite2D" parent="door1"]
-texture = ExtResource("1_5m7ll")
+texture = ExtResource("2_5supk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="door1"]
 shape = SubResource("RectangleShape2D_xqlvr")
@@ -29,11 +34,14 @@ shape = SubResource("RectangleShape2D_xqlvr")
 [node name="LightOccluder2D" type="LightOccluder2D" parent="door1"]
 occluder = SubResource("OccluderPolygon2D_lrnwp")
 
-[node name="door2" type="Area2D" parent="."]
-position = Vector2(0, -8)
+[node name="door2" type="StaticBody2D" parent="."]
+position = Vector2(0, -4)
+scale = Vector2(1, 0.5)
+collision_layer = 0
+collision_mask = 7
 
 [node name="d2" type="Sprite2D" parent="door2"]
-texture = ExtResource("1_5m7ll")
+texture = ExtResource("2_5supk")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="door2"]
 shape = SubResource("RectangleShape2D_xqlvr")
@@ -43,12 +51,12 @@ occluder = SubResource("OccluderPolygon2D_lrnwp")
 
 [node name="DoorButton1" type="Area2D" parent="."]
 position = Vector2(2, 0)
-script = ExtResource("3_x5wnp")
+script = ExtResource("3_1txih")
 
 [node name="button1" type="Sprite2D" parent="DoorButton1"]
 position = Vector2(-18, 0)
 rotation = 1.5708
-texture = ExtResource("3_wy3cx")
+texture = ExtResource("4_kwsj3")
 region_enabled = true
 region_rect = Rect2(0, 0, 16, 16)
 
@@ -56,21 +64,14 @@ region_rect = Rect2(0, 0, 16, 16)
 position = Vector2(-18, 0)
 shape = SubResource("RectangleShape2D_idesg")
 
-[node name="DoorButton2" type="Area2D" parent="."]
-position = Vector2(-2, 0)
-rotation = 3.14159
-script = ExtResource("3_x5wnp")
+[node name="hurtbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 6
+monitoring = false
+monitorable = false
 
-[node name="button1" type="Sprite2D" parent="DoorButton2"]
-position = Vector2(-18, 0)
-rotation = 1.5708
-texture = ExtResource("3_wy3cx")
-region_enabled = true
-region_rect = Rect2(0, 0, 16, 16)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorButton2"]
-position = Vector2(-18, 0)
-shape = SubResource("RectangleShape2D_idesg")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
+shape = SubResource("RectangleShape2D_mok1n")
 
 [connection signal="input_event" from="DoorButton1" to="." method="_on_area_2d_input_event"]
-[connection signal="input_event" from="DoorButton2" to="." method="_on_area_2d_input_event"]
+[connection signal="body_entered" from="hurtbox" to="." method="_on_hurtbox_body_entered"]

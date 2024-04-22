@@ -4,6 +4,9 @@ var json = JSON.new()
 var path = "user://data.json"
 var leaderboard = {}
 
+var score = 0
+var sharpshooter_combo = 0
+
 var player_state = "free"
 
 func write_save_file(content):
@@ -28,18 +31,6 @@ func _ready():
 	if FileAccess.file_exists(path) == false:
 		create_new_save_file()
 	leaderboard = read_save_file()
-	
-	print(leaderboard[2]["score"])
-	leaderboard[2]["score"] += 100
-	write_save_file(leaderboard)
-	
-	print(leaderboard[2]["score"])
-	leaderboard[2]["score"] += 100
-	write_save_file(leaderboard)
-	
-	print(leaderboard[2]["score"])
-	leaderboard[2]["score"] += 100
-	write_save_file(leaderboard)
 	
 	print(leaderboard[2]["score"])
 	leaderboard[2]["score"] += 100
