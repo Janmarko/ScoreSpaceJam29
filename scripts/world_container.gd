@@ -1,5 +1,23 @@
 extends Resource
 
+var jetwisp = preload("res://scenes/enemies/jetwisp.tscn")
+var shell = preload("res://scenes/enemies/shell.tscn")
+var slime = preload("res://scenes/enemies/slime.tscn")
+var walker = preload("res://scenes/enemies/walker.tscn")
+var door = preload("res://scenes/single_door.tscn")
+
+#enemy list
+const JETWISP = 0
+const SHELL = 1
+const SLIME = 2
+const WALKER = 3
+var ENEMIES = [jetwisp, shell, slime, walker]
+
+#chances per enemy generation
+const ENEMY_IDS = [JETWISP, SHELL, SLIME, WALKER]
+const ENEMY_CHANCES = [16, 28, 28, 28]
+var ENEMY_CHANCE_ARRAY = [] #populated in constructor
+
 #tile constants
 const BLOCKER = 999
 const FLOOR_1 = 1
@@ -74,6 +92,7 @@ const DOOR_PATTERNS = [[true, true, false, false, true],
 
 #references - set up in constructor
 var tile_map = null
+var enemy_manager = null
 var rng = null
 
 #world data
@@ -85,8 +104,12 @@ var hallway_coords = {}
 var graph = {}
 var tile_map_backend = {}
 
-func _init(new_tile_map):
+#game data
+var game_start = null
+
+func _init(new_tile_map, new_enemy_manager):
 	tile_map = new_tile_map
+	enemy_manager = new_enemy_manager
 	rng = RandomNumberGenerator.new()
 	rng.randomize()
 	for k in TILE_COORDS:
@@ -98,7 +121,11 @@ func _init(new_tile_map):
 	for i in range(0, len(SPACE_TILES)):
 		for j in range(0, SPACE_CHANCES[i]):
 			SPACE_CHANCE_ARRAY.append(SPACE_TILES[i])
-
+	for i in range(0, len(ENEMY_IDS)):
+		for j in range(0, ENEMY_CHANCES[i]):
+			ENEMY_CHANCE_ARRAY.append(ENEMY_IDS[i])
+	
+	game_start = Time.get_ticks_msec()
 
 func _ready():
 	pass
@@ -108,6 +135,9 @@ func choose_floor():
 
 func choose_space():
 	return SPACE_CHANCE_ARRAY[rng.randi_range(0, 99)]
+
+func choose_enemy():
+	return ENEMY_CHANCE_ARRAY[rng.randi_range(0, 99)]
 
 func generate_room(x_center, y_center):
 	#Generates a room and returns a dictionary representing the room in global coords
@@ -190,7 +220,18 @@ func save_room(room):
 				continue
 		tile_map_backend[k] = room[k]
 
-func generate_hallway(from_x, from_y, to_x, to_y, from_id, to_id):
+func spawn_enemy_at(enemy_id, loc_x, loc_y):
+	var instance = ENEMIES[enemy_id].instantiate()
+	enemy_manager.add_child(instance)
+	instance.global_position = Vector2(loc_x, loc_y)
+
+func spawn_door_at(is_vertical, loc_x, loc_y):
+	var instance = door.instantiate()
+	enemy_manager.add_child(instance)
+	instance.global_position = Vector2(loc_x, loc_y)
+	instance.is_vertical = is_vertical
+
+func generate_hallway(from_x, from_y, to_x, to_y):
 	#Generates a hallway between 2 coordinates
 	#Returned dict:
 	#	key: Vector2i -> representing x,y coords in global space
@@ -255,6 +296,10 @@ func generate_hallway(from_x, from_y, to_x, to_y, from_id, to_id):
 
 					found = true
 					tile_map_backend[Vector2i(cx, cy)] = FLOOR_DOOR
+					var orientation = false
+					if k == 1 or k == 3:
+						orientation = true
+					spawn_door_at(orientation, cx*16.0+8.0, cy*16.0+8.0)
 					break
 			if found:
 				break
@@ -327,6 +372,11 @@ func generate_env(x_center, y_center):
 			room_centers[current_room] = Vector2i(round(sum_x / count), round(sum_y / count))
 			new_rooms.append(current_room)
 			
+			for r in room:
+				if rng.randf() >= min(0.04 + float(Time.get_ticks_msec() - game_start) / 60000.0 * 0.01, 0.15):
+					continue
+				spawn_enemy_at(choose_enemy(), r[0]*16.0+8.0, r[1]*16.0+8.0)
+			
 		if len(room) > 10:
 			room = extend_room(room, OCCLUDER)
 		else:
@@ -373,8 +423,7 @@ func generate_env(x_center, y_center):
 			graph[nr][dists[h][1]] = null
 			graph[dists[h][1]][nr] = null
 			generate_hallway(room_centers[nr][0], room_centers[nr][1], \
-							 room_centers[dists[h][1]][0], room_centers[dists[h][1]][1], \
-							 nr, dists[h][1])
+							 room_centers[dists[h][1]][0], room_centers[dists[h][1]][1])
 
 	#add space tiles outside
 	for i in range(y_center-50, y_center+50+1):

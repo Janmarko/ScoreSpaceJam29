@@ -11,7 +11,8 @@ const SPEED = 60
 func _ready():
 	if wc == null:
 		var tile_map = get_parent().get_parent().get_node("TileMap")
-		wc = WorldContainer.new(tile_map)
+		var enemy_manager = get_parent().get_node("enemy_manager")
+		wc = WorldContainer.new(tile_map, enemy_manager)
 		
 	wc.generate_env(position.x, position.y)
 
