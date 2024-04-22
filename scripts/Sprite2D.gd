@@ -1,7 +1,7 @@
 extends Sprite2D
 
 @onready var path = get_parent()
-@onready var laser_manager = get_parent().get_parent().get_parent().get_parent().get_child(2)
+@onready var laser_manager = get_parent().get_parent().get_parent().get_parent().get_child(1)
 @onready var laser = preload("res://scenes/player/laser.tscn")
 
 var laser_speed = 500

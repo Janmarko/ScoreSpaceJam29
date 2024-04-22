@@ -1,7 +1,16 @@
 extends CharacterBody2D
 
+const WorldContainer = preload("res://scripts/world_container.gd")
+var wc = null
 
 const SPEED = 75.0
+
+func _ready():
+	if wc == null:
+		var tile_map = get_parent().get_parent().get_node("TileMap")
+		wc = WorldContainer.new(tile_map)
+		
+	wc.generate_env(position.x, position.y)
 
 func _physics_process(delta):
 	# Get the input direction and handle the movement/deceleration.
@@ -19,3 +28,7 @@ func _physics_process(delta):
 
 func get_squished():
 	print("lmao, bucko, you just got squished")
+
+func _input(event):
+	if event.is_action_pressed("interact"):
+		wc.generate_env(position.x, position.y)
