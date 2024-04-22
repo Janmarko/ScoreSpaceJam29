@@ -126,6 +126,7 @@ rotation = 1.5708
 shape = SubResource("CircleShape2D_betnp")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+debug_enabled = true
 
 [node name="Pathfind_timer" type="Timer" parent="."]
 wait_time = 0.5

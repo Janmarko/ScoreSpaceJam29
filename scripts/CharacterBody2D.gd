@@ -31,7 +31,10 @@ func _physics_process(delta):
 	move_and_slide()
 
 func get_squished():
-	print("lmao, bucko, you just got squished")
+	GameMaster.player_state = "game_over"
+	var tween = create_tween().set_trans(Tween.TRANS_SINE)
+	death_transition.play("fade_out")
+	tween.tween_property($Sprite2D, "scale", Vector2(0,0), 0.2)
 
 func _input(event):
 	if event.is_action_pressed("interact"):

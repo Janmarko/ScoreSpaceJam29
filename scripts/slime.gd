@@ -18,6 +18,9 @@ func _ready():
 func _physics_process(delta):
 	if hitstun == true:
 		return
+	if is_chasing == false:
+		$Pathfind_timer.stop()
+		return
 	
 	var direction = to_local(navigation_agent.get_next_path_position()).normalized()
 	velocity = velocity.lerp(direction * speed, ACCELERATION * delta)
@@ -33,6 +36,7 @@ func _on_area_2d_body_entered(body):
 	player = body
 	print("there you are!")
 	is_chasing = true
+	$Pathfind_timer.start()
 
 func _on_area_2d_body_exited(body):
 	player = null

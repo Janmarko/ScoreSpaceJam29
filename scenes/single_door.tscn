@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/single_door.gd" id="1_0fm44"]
 [ext_resource type="Texture2D" uid="uid://b3jc0iffget1v" path="res://sprites/DoorTemp.png" id="2_5supk"]
-[ext_resource type="Script" path="res://scripts/DoorButton.gd" id="3_1txih"]
-[ext_resource type="Texture2D" uid="uid://57umg06tgeoo" path="res://sprites/IconTilemap.png" id="4_kwsj3"]
+[ext_resource type="Script" path="res://scenes/door1.gd" id="2_lx5c4"]
+[ext_resource type="Script" path="res://scenes/door2.gd" id="4_wc5mu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xqlvr"]
 size = Vector2(16, 16)
@@ -11,19 +11,23 @@ size = Vector2(16, 16)
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_lrnwp"]
 polygon = PackedVector2Array(-1, -8, 1, -8, 1, 8, -1, 8)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_idesg"]
-size = Vector2(14, 14)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mok1n"]
 size = Vector2(16, 16)
 
-[node name="doors" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ivk6v"]
+
+[node name="doors" type="Area2D"]
+collision_layer = 2
+collision_mask = 7
 script = ExtResource("1_0fm44")
 
 [node name="door1" type="StaticBody2D" parent="."]
+visibility_layer = 5
 position = Vector2(0, 4)
 scale = Vector2(1, 0.5)
-collision_mask = 7
+collision_layer = 3
+collision_mask = 0
+script = ExtResource("2_lx5c4")
 
 [node name="d1" type="Sprite2D" parent="door1"]
 texture = ExtResource("2_5supk")
@@ -37,8 +41,8 @@ occluder = SubResource("OccluderPolygon2D_lrnwp")
 [node name="door2" type="StaticBody2D" parent="."]
 position = Vector2(0, -4)
 scale = Vector2(1, 0.5)
-collision_layer = 0
-collision_mask = 7
+collision_mask = 3
+script = ExtResource("4_wc5mu")
 
 [node name="d2" type="Sprite2D" parent="door2"]
 texture = ExtResource("2_5supk")
@@ -49,21 +53,6 @@ shape = SubResource("RectangleShape2D_xqlvr")
 [node name="LightOccluder2D2" type="LightOccluder2D" parent="door2"]
 occluder = SubResource("OccluderPolygon2D_lrnwp")
 
-[node name="DoorButton1" type="Area2D" parent="."]
-position = Vector2(2, 0)
-script = ExtResource("3_1txih")
-
-[node name="button1" type="Sprite2D" parent="DoorButton1"]
-position = Vector2(-18, 0)
-rotation = 1.5708
-texture = ExtResource("4_kwsj3")
-region_enabled = true
-region_rect = Rect2(0, 0, 16, 16)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorButton1"]
-position = Vector2(-18, 0)
-shape = SubResource("RectangleShape2D_idesg")
-
 [node name="hurtbox" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 6
@@ -73,5 +62,7 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
 shape = SubResource("RectangleShape2D_mok1n")
 
-[connection signal="input_event" from="DoorButton1" to="." method="_on_area_2d_input_event"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ivk6v")
+
 [connection signal="body_entered" from="hurtbox" to="." method="_on_hurtbox_body_entered"]
